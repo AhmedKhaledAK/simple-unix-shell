@@ -8,40 +8,34 @@
 using namespace std;
 
 
-/*char * tokenize(char ar [], int len){
+void tokenize(char * ar [], char str []){
     char *token = strtok(str, " ");
-    char * ar[N] = tokenize(str, len);
     int i=0;
     while(token != NULL){
         ar[i++]=token;
         token = strtok(NULL, " ");
     }
     ar[i]=NULL;
-    return ar;
-}*/
+}
 
 int main()
 {
-    int N = 3;
-
     int process = fork();
 
     if (process== 0){
         printf("hello from child\n");
 
-        char str[20];
+        char str[256];
+
         scanf("%[^\n]%*c", str);
 
-        char *token = strtok(str, " ");
-        char * ar[N];
-        int i=0;
-        while(token != NULL){
-            ar[i++]=token;
-            token = strtok(NULL, " ");
-        }
-        ar[i]=NULL;
+        int N = 256;
 
-        int status = execvp(ar[0],ar);
+        char * ar[N];
+
+        tokenize(ar, str);
+
+        execvp(ar[0],ar);
         exit(errno);
     }
     else
