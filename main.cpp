@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void tokenizeCommand(char * ar [], char str []){
+int tokenizeCommand(char * ar [], char str []){
     char *token = strtok(str, " ");
     int i=0;
     while(token != NULL){
@@ -16,14 +16,14 @@ void tokenizeCommand(char * ar [], char str []){
         token = strtok(NULL, " ");
     }
     ar[i]=NULL;
+    return i;
 }
 
-void executeCommand(char * ar[]){
-    int process = fork();
+void executeCommand(char * ar[], bool bg){
+    pid_t process = fork();
 
     if (process== 0){
         printf("hello from child\n");
-
         execvp(ar[0],ar);
         exit(errno);
     }
@@ -31,7 +31,7 @@ void executeCommand(char * ar[]){
     {
         printf("hello from parent\n");
         int status;
-        wait(&status);
+        if(!bg) waitpid(process,&status,0);
         if(WIFEXITED(status)) printf("child exited with = %d\n",WEXITSTATUS(status));
         //if (WIFSIGNALED(status)) psignal(WTERMSIG(status), "Exit signal");
         printf("child has terminated\n");
@@ -50,10 +50,15 @@ int main()
 
         int N = 256;
         char * ar[N];
-        tokenizeCommand(ar, str);
+        int i = tokenizeCommand(ar, str);
+        bool bg = false;
 
         if(strcmp(ar[0], "exit") == 0) exit(0);
-        executeCommand(ar);
+        if(strcmp(ar[i-1], "&") == 0){
+            ar[i-1] = NULL;
+            bg = true;
+        }
+        executeCommand(ar,bg);
 
     }
 
