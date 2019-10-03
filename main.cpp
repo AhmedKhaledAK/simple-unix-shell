@@ -2,23 +2,23 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include<sys/wait.h>
 
 using namespace std;
 
 int main()
 {
-    int x = 1;
-    int process = fork();
 
-    if (process == 0){
-        cout << "Child ID: " << getpid() << "\n";
-        cout << "Parent ID: " << getppid() << "\n";
-        printf("Child has x = %d\n", ++x);
+    int process = fork();
+    if (process== 0)
+        printf("hello from child\n");
+    else
+    {
+        printf("hello from parent\n");
+        wait(NULL);
+        printf("child has terminated\n");
     }
-    else {
-        cout << "Process ID: " << getpid() << "\n";
-        cout << "Parent ID: " << getppid() << "\n";
-        printf("Parent has x = %d\n", --x);
-    }
+
+    printf("Bye\n");
     return 0;
 }
