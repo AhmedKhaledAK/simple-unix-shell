@@ -8,7 +8,7 @@
 using namespace std;
 
 
-void tokenize(char * ar [], char str []){
+void tokenizeCommand(char * ar [], char str []){
     char *token = strtok(str, " ");
     int i=0;
     while(token != NULL){
@@ -18,22 +18,11 @@ void tokenize(char * ar [], char str []){
     ar[i]=NULL;
 }
 
-int main()
-{
+void executeCommand(char * ar[]){
     int process = fork();
 
     if (process== 0){
         printf("hello from child\n");
-
-        char str[256];
-
-        scanf("%[^\n]%*c", str);
-
-        int N = 256;
-
-        char * ar[N];
-
-        tokenize(ar, str);
 
         execvp(ar[0],ar);
         exit(errno);
@@ -49,5 +38,24 @@ int main()
     }
 
     printf("Bye\n");
+}
+
+int main()
+{
+
+
+    while(true){
+        char str[256];
+        scanf("%[^\n]%*c", str);
+
+        int N = 256;
+        char * ar[N];
+        tokenizeCommand(ar, str);
+
+        if(strcmp(ar[0], "exit") == 0) exit(0);
+        executeCommand(ar);
+
+    }
+
     return 0;
 }
