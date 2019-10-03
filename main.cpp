@@ -10,8 +10,11 @@ int main()
 {
 
     int process = fork();
-    if (process== 0)
+    if (process== 0){
         printf("hello from child\n");
+        char *ar [2] = {"firefox", NULL};
+        execvp(ar[0],ar);
+    }
     else
     {
         printf("hello from parent\n");
