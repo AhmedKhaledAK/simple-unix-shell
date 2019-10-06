@@ -1,0 +1,1 @@
+Child process with id: 32259 terminated with status: 0

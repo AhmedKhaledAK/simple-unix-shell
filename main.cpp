@@ -34,7 +34,10 @@ void sig_handler(int iSignal)
 }
 
 void write_to_file(pid_t pid, int status){
-
+    ofstream myfile;
+    myfile.open("logs.txt", ios_base::app);
+    myfile << "Child process with id: " << pid << " terminated with status: " << status << "\n";
+    myfile.close();
 }
 
 void execute_command(char * ar[], bool bg){
