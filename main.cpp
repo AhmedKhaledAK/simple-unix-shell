@@ -5,6 +5,7 @@
 #include<sys/wait.h>
 #include <bits/stdc++.h>
 #include<sys/types.h>
+#include <fstream>
 
 using namespace std;
 
@@ -32,7 +33,8 @@ void sig_handler(int iSignal)
     if(WIFEXITED(status)) printf("child exited with = %d\n",WEXITSTATUS(status));
 }
 
-void write_to_file(){
+void write_to_file(pid_t pid, int status){
+
 }
 
 void execute_command(char * ar[], bool bg){
