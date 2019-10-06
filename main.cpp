@@ -10,7 +10,7 @@ using namespace std;
 
 bool bg = false;
 
-int tokenizeCommand(char * ar [], char str []){
+int tokenize_command(char * ar [], char str []){
     char *token = strtok(str, " ");
     int i=0;
     while(token != NULL){
@@ -35,7 +35,7 @@ void sig_handler(int iSignal)
 void write_to_file(){
 }
 
-void executeCommand(char * ar[], bool bg){
+void execute_command(char * ar[], bool bg){
 
     //signal(SIGCHLD,sig_handler);
     pid_t process = fork();
@@ -72,14 +72,14 @@ int main()
 
         int N = 256;
         char * ar[N];
-        int i = tokenizeCommand(ar, str);
+        int i = tokenize_command(ar, str);
 
         if(strcmp(ar[0], "exit") == 0) exit(0);
         if(strcmp(ar[i-1], "&") == 0){
             ar[i-1] = NULL;
             bg = true;
         }
-        executeCommand(ar,bg);
+        execute_command(ar,bg);
 
     }
 
