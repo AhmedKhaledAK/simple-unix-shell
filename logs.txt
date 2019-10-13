@@ -1,1 +1,6 @@
-Child process with id: 32259 terminated with status: 0
+Child process with id:  terminated with status: 
+Child process with id:  terminated with status: 
+Child process with id:  terminated with status: 
+Child process with id:  terminated with status: 
+Child process with id:  terminated with status: 
+Child process with id:  terminated with status: 
