@@ -76,19 +76,31 @@ int main()
 {
 
 
+    /* this loop keeps the terminal running to keep taking inputs from the user */
+
     while(true){
         char str[256];
+        /* this scanf takes the whole command with spaces, and it igonres the "enter" character made by the user at the end of the line */
         scanf("%[^\n]%*c", str);
 
+        /* an arbitary size of the command and arguments array which will be the parameter for the execvp system call */
         int N = 256;
         char * ar[N];
+        /* after reading the line from the user, I tokenize the command into strings to insert them into the command and arguments array.
+            This function returns the index of the last element in the array, to check if there's & or no later on */
         int i = tokenize_command(ar, str);
+        /* after tokenizing and inserting into the array, I check if the first element in the array (i.e. the command without the arguments) is equal to exit, the program stops */
+        if(strcmp(ar[0], "exit") == 0) exit(0
 
-        if(strcmp(ar[0], "exit") == 0) exit(0);
+        /* this is to check if the user wants to execute the entered line as a background process (i.e. the parent process doesn't wait for its child to finish executing) */
         if(strcmp(ar[i-1], "&") == 0){
+            /* if it meant to run as a backgroung process, we put NULL in place of & in the commands and arguments array. That's the only reason the user writes &, it's for me
+             to know if I should make the parent process wait or no. I also created a flag to help me determnine whether I should wait or no in the parent process */
             ar[i-1] = NULL;
             bg = true;
         }
+
+        /* finally, after tokenizing and parsing, it is time for executing the command */
         execute_command(ar,bg);
 
     }
