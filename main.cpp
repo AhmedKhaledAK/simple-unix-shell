@@ -58,7 +58,9 @@ void execute_command(char * ar[], bool bg){
 
     if (process== 0){
         //printf("hello from child: %d\n", getpid());
-        execvp(ar[0],ar);
+        int is_executed = execvp(ar[0],ar);
+        if(is_executed < 0)
+            cout << "error: " << errno <<" this is not a command!\n";
         exit(errno);
     }
     else
@@ -96,8 +98,8 @@ int main()
         if(strcmp(ar[0], "exit") == 0) exit(0);
 
         else if(strcmp(ar[0], "cd")==0){
-            int isChanged = chdir(ar[1]);
-            if(isChanged < 0)
+            int is_changed = chdir(ar[1]);
+            if(is_changed < 0)
                 printf("No such file or directory\n");
         }
 
