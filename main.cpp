@@ -80,6 +80,7 @@ int main()
 
     while(true){
         char str[256];
+        printf("ushell~$:");
         /* this scanf takes the whole command with spaces, and it igonres the "enter" character made by the user at the end of the line */
         scanf("%[^\n]%*c", str);
 
@@ -90,7 +91,7 @@ int main()
             This function returns the index of the last element in the array, to check if there's & or no later on */
         int i = tokenize_command(ar, str);
         /* after tokenizing and inserting into the array, I check if the first element in the array (i.e. the command without the arguments) is equal to exit, the program stops */
-        if(strcmp(ar[0], "exit") == 0) exit(0
+        if(strcmp(ar[0], "exit") == 0) exit(0);
 
         /* this is to check if the user wants to execute the entered line as a background process (i.e. the parent process doesn't wait for its child to finish executing) */
         if(strcmp(ar[i-1], "&") == 0){
