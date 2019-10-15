@@ -25,8 +25,6 @@ int tokenize_command(char * ar [], char str []){
 
 void write_to_file(pid_t pid, int status){
     ofstream myfile;
-    cout << "log loc " << log_file << "\n";
-    cout << "getcwd " << org_log_loc << "\n";
     myfile.open(log_file, ios_base::app);
     myfile << "Child process with id: " << "" << " terminated with status: " << "" << "\n";
     myfile.close();
@@ -86,8 +84,9 @@ int main()
         char str[N];
         printf("ushell:%s~$",get_current_dir_name());
         /* this scanf takes the whole command with spaces, and it igonres the "enter" character made by the user at the end of the line */
-        scanf("%[^\n]%*c", str);
-
+        fgets(str, N, stdin);
+        str[strlen(str)-1] = '\0';
+        if(strlen(str) == 0) continue;
         /* an arbitary size of the command and arguments array which will be the parameter for the execvp system call */
         char * ar[N];
         /* after reading the line from the user, I tokenize the command into strings to insert them into the command and arguments array.
