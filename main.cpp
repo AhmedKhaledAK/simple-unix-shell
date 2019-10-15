@@ -9,6 +9,9 @@
 
 using namespace std;
 
+char * org_log_loc;
+char log_file[100];
+
 int tokenize_command(char * ar [], char str []){
     char *token = strtok(str, " ");
     int i=0;
@@ -22,7 +25,9 @@ int tokenize_command(char * ar [], char str []){
 
 void write_to_file(pid_t pid, int status){
     ofstream myfile;
-    myfile.open("logs.txt", ios_base::app);
+    cout << "log loc " << log_file << "\n";
+    cout << "getcwd " << org_log_loc << "\n";
+    myfile.open(log_file, ios_base::app);
     myfile << "Child process with id: " << "" << " terminated with status: " << "" << "\n";
     myfile.close();
 }
@@ -31,7 +36,6 @@ void sig_handler(int iSignal)
 {
     //int status;
     //pid_t pid = wait(&status);
-
     write_to_file(0,0);
 
     /*if(WIFEXITED(status)) {
@@ -72,6 +76,9 @@ void execute_command(char * ar[], bool bg){
 
 int main()
 {
+    org_log_loc = get_current_dir_name();
+    strcat(log_file, org_log_loc);
+    strcat(log_file, "/logs.txt");
     int N = 256;
     /* this loop keeps the terminal running to keep taking inputs from the user */
     while(true){
