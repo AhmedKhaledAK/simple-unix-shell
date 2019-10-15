@@ -9,8 +9,6 @@
 
 using namespace std;
 
-bool bg = false;
-
 int tokenize_command(char * ar [], char str []){
     char *token = strtok(str, " ");
     int i=0;
@@ -57,19 +55,19 @@ void execute_command(char * ar[], bool bg){
     pid_t process = fork();
 
     if (process== 0){
-        printf("hello from child: %d\n", getpid());
+        //printf("hello from child: %d\n", getpid());
         execvp(ar[0],ar);
         exit(errno);
     }
     else
     {
-        printf("hello from parent: %d\n", getpid());
+        //printf("hello from parent: %d\n", getpid());
         int status;
         if(!bg) waitpid(process,&status,0);
-        printf("child has terminated\n");
+        //printf("child has terminated\n");
     }
 
-    printf("Bye\n");
+    //printf("Bye\n");
 }
 
 int main()
@@ -77,6 +75,7 @@ int main()
     int N = 256;
     /* this loop keeps the terminal running to keep taking inputs from the user */
     while(true){
+        bool bg = false;
         char str[N];
         printf("ushell:%s~$",get_current_dir_name());
         /* this scanf takes the whole command with spaces, and it igonres the "enter" character made by the user at the end of the line */
