@@ -49,7 +49,7 @@ void zombie_process_killer(int sig_arg)
 }
 
 /* this function executes the command sent by the user */
-void execute_command(char * ar[], bool bg){
+void execute_command(char * cmd_array[], bool bg){
 
     /* at first, we initialize a signal handler using the signal() function... Actually, this line of code can be written anywhere before the fork() function is called */
     signal(SIGCHLD,zombie_process_killer);
@@ -61,7 +61,7 @@ void execute_command(char * ar[], bool bg){
 
     /* if the fork() function returned 0, then the child process is running now */
     if (process== 0){
-        int is_executed = execvp(ar[0],ar);
+        int is_executed = execvp(cmd_array[0],cmd_array);
         if(is_executed < 0)
             cout << "error: " << errno <<" this is not a command!\n";
         exit(errno);
