@@ -42,7 +42,7 @@ void write_to_file(pid_t pid, int status){
 }
 
 /* this is the signal handler, this interrupt handler is called and the parent process executes it when the child process is terminated */
-void sig_handler(int iSignal)
+void zombie_process_killer(int sig_arg)
 {
     /* I do nothing here except that I am writing to the file */
     write_to_file(0,0);
@@ -52,7 +52,7 @@ void sig_handler(int iSignal)
 void execute_command(char * ar[], bool bg){
 
     /* at first, we initialize a signal handler using the signal() function... Actually, this line of code can be written anywhere before the fork() function is called */
-    signal(SIGCHLD,sig_handler);
+    signal(SIGCHLD,zombie_process_killer);
 
     /* we fork() here, which means we create a child process here... this child process will run concurrently with the parent process. The parent and child processes are two
         totally different processes, and the local variables are for each one only and not seen by the other */
