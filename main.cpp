@@ -35,9 +35,13 @@ int tokenize_command(char * cmd_array [], char str []){
 /* this function writes to the file. I created it with two parameters, the process id and the status of termination to print them in the file... although they are not used here
     because I didn't send the process id and the status of the terminated process, so they are useless here */
 void write_to_file(pid_t pid, int status){
+    /* this is a class in cpp which takes care of writing to files */
     ofstream myfile;
+    /* I open the file here; remember that log_file is the result of concatenating the original log file location with "logs.txt" */
+    /* if the file is not found, it will be created.. the second parameter tells the method to append to the file rather than overwriting its contents every time */
     myfile.open(log_file, ios_base::app);
     myfile << "Child process with id: " << "" << " terminated with status: " << "" << "\n";
+    /* after we finish dealing with the file, we must close it to free it from the memory */
     myfile.close();
 }
 
