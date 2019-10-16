@@ -61,15 +61,22 @@ void execute_command(char * cmd_array[], bool bg){
 
     /* if the fork() function returned 0, then the child process is running now */
     if (process== 0){
+        /* we pass the command which is at index [0] and a pointer to the array of strings to the system call function "execvp()" which invokes the OS to execute the command */
         int is_executed = execvp(cmd_array[0],cmd_array);
+        /* The execut function returns an integer, if this integer is less than zero then the execution was not successfull. An attribute called "errno" is filled in this case
+            with the error number */
         if(is_executed < 0)
             cout << "error: " << errno <<" this is not a command!\n";
+        /* when the child processes reaches execvp() and executes it normally, the child process never gets back here again, so if it is still here we exit with errno */
         exit(errno);
     }
     /* else if the fork() returned a number which is greater than 0, this means that the parent process is running now and this returned integer is the id of the child process */
     else
     {
+        /* this variable "status" is empty now, it will be filled when the child process terminates and this gives information about the type of termination of the process */
         int status;
+        /* if the flag of the background process is not raised (false) (i.e. there is no & after the command), we force the parent process to wait, else the parent must not
+            wait because the process will be a background process */
         if(!bg) waitpid(process,&status,0);
     }
 }
