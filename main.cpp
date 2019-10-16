@@ -75,7 +75,7 @@ void execute_command(char * ar[], bool bg){
     /* if there is a global variable, both processes will see it normally... but if a process changes its value, the other process will be affected at all */
     pid_t process = fork();
 
-
+    /* if the fork() function returned 0, then the child process is running now */
     if (process== 0){
         //printf("hello from child: %d\n", getpid());
         int is_executed = execvp(ar[0],ar);
@@ -83,6 +83,7 @@ void execute_command(char * ar[], bool bg){
             cout << "error: " << errno <<" this is not a command!\n";
         exit(errno);
     }
+    /* else if the fork() returned a number which is greater than 0, this means that the parent process is running now and this returned integer is the id of the child process */
     else
     {
         //printf("hello from parent: %d\n", getpid());
