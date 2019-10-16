@@ -89,6 +89,8 @@ int main()
     strcat(log_file, org_log_loc);
     strcat(log_file, "/logs.txt");
 
+    char * whoami = getlogin();
+
     /* this is the size of the arrays and lines entered by the user, can also be done using malloc(which would be better) but this will need to be freed */
     int N = 256;
 
@@ -96,7 +98,7 @@ int main()
     while(true){
         bool bg = false;
         char str[N];
-        printf("ushell:%s~$",get_current_dir_name());
+        printf("%s:%s~$", whoami, get_current_dir_name());
         /* this scanf takes the whole command with spaces, and it igonres the "enter" character made by the user at the end of the line */
         fgets(str, N, stdin);
         str[strlen(str)-1] = '\0';
