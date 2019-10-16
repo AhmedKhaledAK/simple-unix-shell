@@ -44,24 +44,8 @@ void write_to_file(pid_t pid, int status){
 /* this is the signal handler, this interrupt handler is called and the parent process executes it when the child process is terminated */
 void sig_handler(int iSignal)
 {
-    //int status;
-    //pid_t pid = wait(&status);
     /* I do nothing here except that I am writing to the file */
     write_to_file(0,0);
-
-    /*if(WIFEXITED(status)) {
-        printf("child exited with = %d and %d\n",WEXITSTATUS(status), pid);
-        write_to_file(pid, WEXITSTATUS(status));
-    }*/
-    /*int status;
-    pid_t pid;
-    cout << "pid: " << getpid() << "\n";
-    pid = wait(&status); //After wait, child is definitely freed.
-    printf("pid = %d , status = %d\n", pid, status);
-    if(WIFEXITED(status)) {
-        printf("child exited with = %d and %d\n",WEXITSTATUS(status), pid);
-        write_to_file(pid, WEXITSTATUS(status));
-    }*/
 }
 
 /* this function executes the command sent by the user */
@@ -77,7 +61,6 @@ void execute_command(char * ar[], bool bg){
 
     /* if the fork() function returned 0, then the child process is running now */
     if (process== 0){
-        //printf("hello from child: %d\n", getpid());
         int is_executed = execvp(ar[0],ar);
         if(is_executed < 0)
             cout << "error: " << errno <<" this is not a command!\n";
@@ -86,13 +69,9 @@ void execute_command(char * ar[], bool bg){
     /* else if the fork() returned a number which is greater than 0, this means that the parent process is running now and this returned integer is the id of the child process */
     else
     {
-        //printf("hello from parent: %d\n", getpid());
         int status;
         if(!bg) waitpid(process,&status,0);
-        //printf("child has terminated\n");
     }
-
-    //printf("Bye\n");
 }
 
 int main()
