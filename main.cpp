@@ -14,19 +14,19 @@ char * org_log_loc;
 char log_file[100];
 
 /* this method tokenizes the input line taken from the user */
-int tokenize_command(char * ar [], char str []){
+int tokenize_command(char * cmd_array [], char str []){
     /* first, we take the first token... so for example if str is equal to "ls -a", token here will be equal to "ls" */
     char *token = strtok(str, " ");
     int i=0;
     /* loop on str, and every time put it in the token... if end of str is reached, token will be NULL */
     while(token != NULL){
         /* every time we insert the string (the token) into the array at index i and then we increment i */
-        ar[i++]=token;
+        cmd_array[i++]=token;
         /* we get the other token from str, according to our example... token in the second loop will be equal to "-a", and in the third loop it is finally equals to NULL */
         token = strtok(NULL, " ");
     }
     /* at last, the array of the command and arguments must have a NULL in it as the last element, this is required by the execvp() system call */
-    ar[i]=NULL;
+    cmd_array[i]=NULL;
     /* the array is as this: ar = {"ls", "-a", NULL} */
     /* this method returns the index of the last element of the array, so in the caller we can get this index and check for "&" to determine if this will be a background process */
     return i;
@@ -95,32 +95,32 @@ int main()
         str[strlen(str)-1] = '\0';
         if(strlen(str) == 0) continue;
         /* an arbitary size of the command and arguments array which will be the parameter for the execvp system call */
-        char * ar[N];
+        char * cmd_array[N];
         /* after reading the line from the user, I tokenize the command into strings to insert them into the command and arguments array.
             This function returns the index of the last element in the array, to check if there's & or no later on */
-        int i = tokenize_command(ar, str);
+        int i = tokenize_command(cmd_array, str);
         /* after tokenizing and inserting into the array, I check if the first element in the array (i.e. the command without the arguments) is equal to exit, the program stops */
-        if(strcmp(ar[0], "exit") == 0) exit(0);
+        if(strcmp(cmd_array[0], "exit") == 0) exit(0);
 
         /* this is for executing the change directory "cd" command, as the execvp doesn't execute it */
-        else if(strcmp(ar[0], "cd")==0){
+        else if(strcmp(cmd_array[0], "cd")==0){
             /* the chdir is a built-in function that changes the working directory. It returns a positive integer if operation is successfull, else, it returns a negative number */
-            int is_changed = chdir(ar[1]);
+            int is_changed = chdir(cmd_array[1]);
             if(is_changed < 0)
                 printf("No such file or directory\n");
         }
 
         else{
             /* this is to check if the user wants to execute the entered line as a background process (i.e. the parent process doesn't wait for its child to finish executing) */
-            if(strcmp(ar[i-1], "&") == 0){
+            if(strcmp(cmd_array[i-1], "&") == 0){
                 /* if it meant to run as a backgroung process, we put NULL in place of & in the commands and arguments array. That's the only reason the user writes &, it's for me
                  to know if I should make the parent process wait or no. I also created a flag to help me determnine whether I should wait or no in the parent process */
-                ar[i-1] = NULL;
+                cmd_array[i-1] = NULL;
                 bg = true;
             }
 
             /* finally, after tokenizing and parsing, it is time for executing the command */
-            execute_command(ar,bg);
+            execute_command(cmd_array,bg);
         }
 
     }
