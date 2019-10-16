@@ -99,10 +99,13 @@ int main()
     while(true){
         bool bg = false;
         char str[N];
+        /* this changes the color of the text printed on the terminal to yellow "[0;33m" */
         printf("\033[0;33m");
         printf("%s:", whoami);
+        /* this changes the color of the text printed on the terminal to green "[0;32m" */
         printf("\033[0;32m");
         printf("~$%s", get_current_dir_name());
+        /* this resets the color of the text of the terminal to the default color, so the result of execution appears in white (which is the default color) */
         printf("\033[0m;");
         /* this scanf takes the whole command with spaces, and it igonres the "enter" character made by the user at the end of the line */
         fgets(str, N, stdin);
