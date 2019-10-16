@@ -16,14 +16,14 @@ char log_file[100];
 /* this method tokenizes the input line taken from the user */
 int tokenize_command(char * cmd_array [], char str []){
     /* first, we take the first token... so for example if str is equal to "ls -a", token here will be equal to "ls" */
-    char *token = strtok(str, " ");
+    char *token_cmd = strtok(str, " ");
     int i=0;
     /* loop on str, and every time put it in the token... if end of str is reached, token will be NULL */
-    while(token != NULL){
+    while(token_cmd != NULL){
         /* every time we insert the string (the token) into the array at index i and then we increment i */
-        cmd_array[i++]=token;
+        cmd_array[i++]=token_cmd;
         /* we get the other token from str, according to our example... token in the second loop will be equal to "-a", and in the third loop it is finally equals to NULL */
-        token = strtok(NULL, " ");
+        token_cmd = strtok(NULL, " ");
     }
     /* at last, the array of the command and arguments must have a NULL in it as the last element, this is required by the execvp() system call */
     cmd_array[i]=NULL;
